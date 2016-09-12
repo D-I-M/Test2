@@ -1,35 +1,36 @@
-def Bank(balance, annualInterestRate, monthlyPayment, months):
-    month=0
-    while month<months:
-        balance=(balance-monthlyPayment)*(1+annualInterestRate/12)
-        month+=1  
-    return (round(balance,2))
+def lp(balance,annualInterestRate):
+    def Bank(balance, annualInterestRate, monthlyPayment, months):
+        month=0
+        while month<months:
+            balance=(balance-monthlyPayment)*(1+annualInterestRate/12)
+            month+=1  
+        return (round(balance,2))
     
 
-balance=320000
-annualInterestRate=0.2
-months=12
-monthlyPaymentlow=balance/12
-monthlyPaymenthigh=(balance*(1.0 + annualInterestRate/12)**12)/12
-monthlyPayment=0
-print ('new loop', monthlyPaymentlow, monthlyPaymenthigh)
-while Bank(balance, annualInterestRate, monthlyPayment, months)>=0:
-        
-    if Bank(balance, annualInterestRate, monthlyPayment, months)>0:
-        print ('begin',balance, monthlyPaymentlow, monthlyPaymenthigh)
-        monthlyPaymentlow=(monthlyPaymenthigh-monthlyPaymentlow)/2
-        monthlyPaymenthigh=(balance*(1+annualInterestRate/12)**12)/12
-        
-        monthlyPayment=(monthlyPaymenthigh-monthlyPaymentlow)/2    
-        print ('elif',balance, monthlyPaymentlow, monthlyPaymenthigh)
-        #Bank(balance, annualInterestRate, monthlyPayment, months)
+
+    months=12
+    monthlyPaymentlow=balance/12
+    monthlyPaymenthigh=(balance*(1.0 + annualInterestRate/12)**12)/12
+    monthlyPayment=(monthlyPaymenthigh+monthlyPaymentlow)/2
+    print ('New loop: monthlyPaymentlow', monthlyPaymentlow,'monthlyPaymenthigh', monthlyPaymenthigh)    
     
-    elif Bank(balance, annualInterestRate, monthlyPayment, months)<0:    
-        monthlyPaymentlow=balance/12
-        monthlyPaymenthigh=(monthlyPaymenthigh-monthlyPaymentlow)/2
-        
-        monthlyPayment=(monthlyPaymenthigh-monthlyPaymentlow)/2    
-#        Bank(balance, annualInterestRate, monthlyPayment, months)
-        print ('elif2',balance, monthlyPaymentlow, monthlyPaymenthigh)
-print ('The lowest payment', monthlyPayment)    
+    test=0
+    while test!=30:
+        if Bank(balance, annualInterestRate, monthlyPayment, months)>0:
+            print ('!!!monthlyPaymentlow!!!', monthlyPaymentlow,'monthlyPaymenthigh', monthlyPaymenthigh,'monthlyPayment', monthlyPayment)            
+                  
+            monthlyPaymentlow=monthlyPayment
+            
+            monthlyPayment=(monthlyPaymenthigh+monthlyPaymentlow)/2
+            print ('Greater than zero, monthlyPaymentlow', monthlyPaymentlow,'monthlyPaymenthigh', monthlyPaymenthigh, monthlyPaymenthigh,'monthlyPayment', monthlyPayment) 
+            test+=1
+        elif Bank(balance, annualInterestRate, monthlyPayment, months)<0:
+            
+            monthlyPaymenthigh=monthlyPayment
+            monthlyPayment=(monthlyPaymenthigh+monthlyPaymentlow)/2
+             
+            print ('Less than zero, monthlyPaymentlow', monthlyPaymentlow,'monthlyPaymenthigh', monthlyPaymenthigh)
+            test+=1
+    print ('The lowest payment', monthlyPayment)    
+       
     
